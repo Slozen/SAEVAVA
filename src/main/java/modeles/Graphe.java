@@ -95,21 +95,83 @@ public class Graphe {
         return degresEntrantZero;
     }
 
-    public ArrayList<String> triToploogique(){
+    public ArrayList<String> triTopologique(){
         ArrayList<String> sources = degreEntrantZero();
         ArrayList<String> resultat = new ArrayList<>();
+
+        HashMap<String, Integer> degEntrant = new HashMap<>();
+        for (String sommet : degreEntrant.keySet()) {
+            degEntrant.put(sommet, degreEntrant.get(sommet));
+        }
+
         while (!sources.isEmpty()){
             String source = sources.remove(0);
             resultat.add(source);
             for (String voisin : sommetVoisin.get(source)){
-                degreEntrant.put(voisin, degreEntrant.get(voisin)-1);
-                if (degreEntrant.get(voisin) == 0){
+                degEntrant.put(voisin, degEntrant.get(voisin)-1);
+                if (degEntrant.get(voisin) == 0){
                     sources.add(voisin);
                 }
             }
         }
         return resultat;
     }
+
+    public ArrayList<String> parcoursHeuristique(CarteDistance carte) {
+        ArrayList<String> trajet = new ArrayList<>();
+        Set<String> visites = new HashSet<>();
+
+        HashMap<String, Integer> degEntrantRestant = new HashMap<>();
+        for (String sommet : degreEntrant.keySet()) {
+            degEntrantRestant.put(sommet, degreEntrant.get(sommet));
+        }
+
+        String positionActuelle = VELIZY_DEPART;
+        trajet.add(positionActuelle);
+        visites.add(positionActuelle);
+
+        while (!positionActuelle.equals(VELIZY_RETOUR)) {
+
+            Set<String> voisins = sommetVoisin.get(positionActuelle);
+            for (String voisin : voisins) {
+                int deg = degEntrantRestant.get(voisin);
+                degEntrantRestant.put(voisin, deg - 1);
+            }
+
+            ArrayList<String> disponibles = new ArrayList<>();
+            for (String sommet : degEntrantRestant.keySet()) {
+                if (degEntrantRestant.get(sommet) == 0 && !visites.contains(sommet)) {
+                    disponibles.add(sommet);
+                }
+            }
+           /* System.out.println("ville disp : " + disponibles );*/
+
+            String prochain = disponibles.get(0);
+            int minDistance = carte.distanceVilles(positionActuelle.substring(0, positionActuelle.length()-1),
+                    disponibles.get(0).substring(0, disponibles.get(0).length()-1));
+
+            for (String ville : disponibles) {
+                String villeActuelle = positionActuelle.substring(0, positionActuelle.length()-1);
+                String villeCible = ville.substring(0, ville.length()-1);
+
+                if (carte.getVilles().contains(villeActuelle) && carte.getVilles().contains(villeCible)) {
+                    int dist = carte.distanceVilles(villeActuelle, villeCible);
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        prochain = ville;
+                    }
+                }
+                /*System.out.println(disponibles);*/
+            }
+
+            positionActuelle = prochain;
+            visites.add(positionActuelle);
+            trajet.add(positionActuelle);
+        }
+        return trajet;
+    }
+
+
 
 
     public String toString() {
