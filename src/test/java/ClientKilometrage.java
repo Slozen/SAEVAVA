@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ClientGraphe {
+public class ClientKilometrage {
     public static void main(String[] args) {
         try {
             File fichierScenario = new File("Scenarios" + File.separator + "scenario_0.txt" );
@@ -19,17 +19,14 @@ public class ClientGraphe {
             CarteDistance carte = LectureDistances.lectureDistances(fichier);
 
             Graphe graphe = new Graphe(livraisons);
-            System.out.println(graphe);
-            System.out.println("tri topologique :");
-            System.out.println(graphe.triTopologique());
-            System.out.println();
-            System.out.println("parcoursHeuristique :");
-            System.out.println(graphe.parcoursHeuristique(carte));
+            ArrayList<String> trajet = graphe.parcoursHeuristique(carte);
+
+            Kilometrage kilometrage = new Kilometrage(carte);
+            kilometrage.afficherTournee(trajet);
 
         }
         catch(IOException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }
