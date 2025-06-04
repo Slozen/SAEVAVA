@@ -2,15 +2,23 @@ package vue;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import modele.CarteDistance;
+import javafx.stage.Stage;
+import modele.Solution;
+
+import java.util.ArrayList;
+
+import static constante.ConstanteComboBoxKmeilleures.K_MEILLEURES;
 
 public class VBoxCarte extends VBox {
 
     private ToggleGroup toggleGroup;
+    private ComboBox<String> comboBoxKmeilleures;
     private RadioButton btnTopologique;
     private RadioButton btnHeuristique;
+    private RadioButton btnKMeilleures;
     private Button btnCreerScenario;
     private Button btnModifierScenario;
     private VBox trajetBox;
@@ -35,19 +43,30 @@ public class VBoxCarte extends VBox {
         Label titre = new Label("Choix de l'algorithme");
         titre.getStyleClass().add("section-title");
 
+        Label labelK = new Label("Choisir une solution :");
+        comboBoxKmeilleures = new ComboBox<>();
+        comboBoxKmeilleures.getItems().setAll(K_MEILLEURES);
+        comboBoxKmeilleures.setValue(comboBoxKmeilleures.getItems().get(0));
+        comboBoxKmeilleures.setDisable(true);
+        labelK.getStyleClass().add("section-title");
+        section1.getChildren().addAll(labelK, comboBoxKmeilleures);
+
         toggleGroup = new ToggleGroup();
 
         btnTopologique = new RadioButton("Tri Topologique");
         btnTopologique.setToggleGroup(toggleGroup);
+        btnTopologique.setSelected(true);
 
         btnHeuristique = new RadioButton("Parcours Heuristique");
         btnHeuristique.setToggleGroup(toggleGroup);
-        btnTopologique.setSelected(true);
+
+        btnKMeilleures = new RadioButton("K meilleurs solutions");
+        btnKMeilleures.setToggleGroup(toggleGroup);
 
         btnTopologique.getStyleClass().add("algo-button");
         btnHeuristique.getStyleClass().add("algo-button");
 
-        section1.getChildren().addAll(titre, btnTopologique, btnHeuristique);
+        section1.getChildren().addAll(titre, btnTopologique, btnHeuristique, btnKMeilleures);
         this.getChildren().add(section1);
     }
 
@@ -78,6 +97,12 @@ public class VBoxCarte extends VBox {
         btnCreerScenario = new Button("Créer Scenario");
         btnCreerScenario.getStyleClass().add("action-button");
 
+        btnCreerScenario.setOnAction(event -> {
+            Stage stage = (Stage) btnCreerScenario.getScene().getWindow();
+            Scene nouvelleScene = VBoxCreationScenario.creerScene(stage);
+            stage.setScene(nouvelleScene);
+        });
+
         boutonActionsBox.getChildren().addAll(btnModifierScenario, btnCreerScenario);
 
         section2.getChildren().addAll(titre, scrollPaneTrajet, boutonActionsBox);
@@ -98,14 +123,6 @@ public class VBoxCarte extends VBox {
         this.getChildren().add(section3);
     }
 
-    public RadioButton getBtnTopologique() {
-        return btnTopologique;
-    }
-
-    public RadioButton getBtnHeuristique() {
-        return btnHeuristique;
-    }
-
     public VBox getTrajetBox() {
         return trajetBox;
     }
@@ -123,14 +140,47 @@ public class VBoxCarte extends VBox {
         }
     }
 
+    public void afficherKTrajets(ArrayList<Solution> solutions) {
+        trajetBox.getChildren().clear();
+
+        int num = 1;
+        for (Solution s : solutions) {
+            Label titre = new Label("🔢 Solution " + num + " - " + s.getDistance() + " km");
+            titre.getStyleClass().add("summary-label");
+            trajetBox.getChildren().add(titre);
+
+            for (String ville : s.getTrajet()) {
+                Label l = new Label("📍 " + ville);
+                l.getStyleClass().add("route-label");
+                trajetBox.getChildren().add(l);
+            }
+
+            trajetBox.getChildren().add(new Separator());
+            num++;
+        }
+    }
+
     public void majDistance(String d) {
         distanceLabel.setText("Distance : " + d + " km");
     }
 
     public String getAlgoSelectionne() {
-        if (btnTopologique.isSelected())
+        if (btnTopologique.isSelected()){
+            comboBoxKmeilleures.setDisable(true);
             return "topologique";
-        else return "heuristique";
+        }
+        if (btnHeuristique.isSelected()){
+            comboBoxKmeilleures.setDisable(true);
+            return "heuristique";
+        }
+        else{
+            comboBoxKmeilleures.setDisable(false);
+            return "k-meilleures";
+        }
+    }
+
+    public int getNbKmeilleurs(){
+        return Integer.parseInt(comboBoxKmeilleures.getValue());
     }
 
 }

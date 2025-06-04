@@ -1,6 +1,7 @@
 package vue;
 
 import controleur.Controleur;
+import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import lecture.LectureDistances;
 import modele.CarteDistance;
@@ -12,6 +13,7 @@ public class HBoxRoot extends HBox {
     private static VBoxCarte leftSide;
     private static CarteDistance carteDistance;
     private static Controleur controleur;
+    private static Scene mainScene;
 
 
     public HBoxRoot() {
@@ -50,5 +52,12 @@ public class HBoxRoot extends HBox {
 
     public static Controleur getControleur() {
         return controleur;
+    }
+
+    public static void setMainScene(Scene scene) {
+        mainScene = scene;
+    }
+    public static Scene getMainScene() {
+        return mainScene;
     }
 }

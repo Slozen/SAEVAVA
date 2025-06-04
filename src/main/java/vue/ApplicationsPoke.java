@@ -10,12 +10,14 @@ public class ApplicationsPoke extends Application {
     public void start(Stage stage) {
 
         HBoxRoot root  = new HBoxRoot();
-        Scene scene = new Scene(root,1000,(500));
+        Scene scene = new Scene(root,1000,(700));
 
         File[] fichiersCss = new File("StyleCSS").listFiles();
         for (File fichier : fichiersCss) {
             scene.getStylesheets().add(fichier.toURI().toString());
         }
+
+        HBoxRoot.setMainScene(scene);
         
         stage.setScene(scene);
         stage.setTitle("PokemonInterface");

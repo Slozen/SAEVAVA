@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class ClientGraphe {
     public static void main(String[] args) {
         try {
-            File fichierScenario = new File("Scenarios" + File.separator + "scenario_0.txt" );
+            File fichierScenario = new File("Scenarios" + File.separator + "scenario_8.txt" );
             File fichierMembres = new File("Membres" + File.separator + "membres_APPLI.txt");
 
             Scenario scenario = LectureScenario.lectureScenario(fichierScenario);

@@ -35,16 +35,30 @@ public class Controleur implements EventHandler {
                 String algo = carte.getAlgoSelectionne();
                 if (algo.equals("topologique")) {
                     trajet = graphe.triTopologique();
+                    Kilometrage kilometre = new Kilometrage(carteDistance);
+                    int distance = kilometre.calculerDistanceTotale(trajet);
+
+                    carte.afficherTrajet(trajet.toArray(new String[0]));
+                    carte.majDistance(String.valueOf(distance));
                 }
-                else {
+                if (algo.equals("k-meilleures")){
+                    int k = carte.getNbKmeilleurs();
+                    KMeilleuresSolutions algoK = new KMeilleuresSolutions(graphe,carteDistance,k);
+                    ArrayList<Solution> solutions = algoK.calculerMeilleuresSolutions();
+                    carte.afficherKTrajets(solutions);
+                    carte.majDistance(" - ");
+
+                }
+                if(algo.equals("heuristique")) {
                     trajet = graphe.parcoursHeuristique(carteDistance);
+                    Kilometrage kilometre = new Kilometrage(carteDistance);
+                    int distance = kilometre.calculerDistanceTotale(trajet);
+
+                    carte.afficherTrajet(trajet.toArray(new String[0]));
+                    carte.majDistance(String.valueOf(distance));
                 }
 
-                Kilometrage kilometre = new Kilometrage(carteDistance);
-                int distance = kilometre.calculerDistanceTotale(trajet);
 
-                carte.afficherTrajet(trajet.toArray(new String[0]));
-                carte.majDistance(String.valueOf(distance));
 
             }
             catch(Exception e){
