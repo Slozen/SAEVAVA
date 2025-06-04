@@ -109,3 +109,14 @@
     -fx-background-color: #cccccc;
     -fx-text-fill: #666666;
 }
+
+.action-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-pref-width: 120px;
+    -fx-padding: 8px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}

@@ -117,6 +117,35 @@ public class Graphe {
         return resultat;
     }
 
+    public ArrayList<String> triTopologiqueAleatoire() {
+        ArrayList<String> resultat = new ArrayList<>();
+        ArrayList<String> sources = degreEntrantZero();
+
+        HashMap<String, Integer> degEntrant = new HashMap<>();
+        for (String sommet : degreEntrant.keySet()) {
+            degEntrant.put(sommet, degreEntrant.get(sommet));
+        }
+
+        while (!sources.isEmpty()) {
+            ArrayList<String> candidats = new ArrayList<>(sources);
+            String choisi = candidats.get((int)(Math.random() * candidats.size()));
+
+            resultat.add(choisi);
+            sources.remove(choisi);
+
+            Set<String> voisins = sommetVoisin.getOrDefault(choisi, new TreeSet<>());
+            for (String voisin : voisins) {
+                int deg = degEntrant.get(voisin) - 1;
+                degEntrant.put(voisin, deg);
+                if (deg == 0) {
+                    sources.add(voisin);
+                }
+            }
+        }
+        return resultat;
+    }
+
+
     public ArrayList<String> parcoursHeuristique(CarteDistance carte) {
         ArrayList<String> trajet = new ArrayList<>();
         Set<String> visites = new HashSet<>();

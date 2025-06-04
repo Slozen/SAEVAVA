@@ -8,12 +8,14 @@ import modele.CarteDistance;
 
 public class VBoxCarte extends VBox {
 
-    private static ToggleGroup toggleGroup;
-    private static RadioButton btnTopologique;
-    private static RadioButton btnHeuristique;
-    private static VBox trajetBox;
-    private static ScrollPane scrollPaneTrajet;
-    private static Label distanceLabel;
+    private ToggleGroup toggleGroup;
+    private RadioButton btnTopologique;
+    private RadioButton btnHeuristique;
+    private Button btnCreerScenario;
+    private Button btnModifierScenario;
+    private VBox trajetBox;
+    private ScrollPane scrollPaneTrajet;
+    private Label distanceLabel;
 
     public VBoxCarte() {
         this.setSpacing(15);
@@ -66,7 +68,19 @@ public class VBoxCarte extends VBox {
         scrollPaneTrajet.setPrefHeight(250);
         scrollPaneTrajet.getStyleClass().add("scenario-scroll-pane");
 
-        section2.getChildren().addAll(titre, scrollPaneTrajet);
+        VBox boutonActionsBox = new VBox(10);
+        boutonActionsBox.setPadding(new Insets(10));
+        boutonActionsBox.setAlignment(Pos.CENTER);
+
+        btnModifierScenario = new Button("Modif Scenario");
+        btnModifierScenario.getStyleClass().add("action-button");
+
+        btnCreerScenario = new Button("Créer Scenario");
+        btnCreerScenario.getStyleClass().add("action-button");
+
+        boutonActionsBox.getChildren().addAll(btnModifierScenario, btnCreerScenario);
+
+        section2.getChildren().addAll(titre, scrollPaneTrajet, boutonActionsBox);
         this.getChildren().add(section2);
     }
 
@@ -92,15 +106,15 @@ public class VBoxCarte extends VBox {
         return btnHeuristique;
     }
 
-    public static VBox getTrajetBox() {
+    public VBox getTrajetBox() {
         return trajetBox;
     }
 
-    public static Label getDistanceLabel() {
+    public Label getDistanceLabel() {
         return distanceLabel;
     }
 
-    public static void afficherTrajet(String[] villes) {
+    public void afficherTrajet(String[] villes) {
         trajetBox.getChildren().clear();
         for (String ville : villes) {
             Label l = new Label("📍 " + ville);
@@ -109,7 +123,7 @@ public class VBoxCarte extends VBox {
         }
     }
 
-    public static void majDistance(String d) {
+    public void majDistance(String d) {
         distanceLabel.setText("Distance : " + d + " km");
     }
 

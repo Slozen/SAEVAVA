@@ -28,6 +28,9 @@ public class ClientGraphe {
             System.out.println();
             System.out.println("parcoursHeuristique :");
             System.out.println(graphe.parcoursHeuristique(carte));
+            System.out.println();
+            System.out.println("tri topologique aleatoire :");
+            System.out.println(graphe.triTopologiqueAleatoire());
 
         }
         catch(IOException e) {
