@@ -1,5 +1,6 @@
 package vue;
 
+import constante.ConstantScenarios;
 import constante.ConstanteScenario;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -195,6 +196,30 @@ public class VboxPokemon extends VBox implements ConstanteScenario {
         messageLabel.setWrapText(true);
         scenarioInfoBox.getChildren().add(messageLabel);
     }
+
+    public void majMenuScenario() {
+        menuScenario.getItems().clear(); // Vide le menu actuel
+        toggleGroup = new ToggleGroup(); // Reset du groupe de sélection
+
+        for (String scenario : ConstantScenarios.getListeScenarios()) {
+            RadioMenuItem menuItem = new RadioMenuItem(scenario);
+            menuItem.setUserData(scenario);
+            menuItem.setToggleGroup(toggleGroup);
+
+            menuItem.setOnAction(event -> {
+                if (menuItem.isSelected()) {
+                    nomScenarioCourant = scenario;
+                    labelScenario.setText("Scénario sélectionné: " + scenario);
+                    menuScenario.setText(scenario);
+                    chargerScenario(scenario);
+                    letsGoBoutton.setDisable(false);
+                }
+            });
+
+            menuScenario.getItems().add(menuItem);
+        }
+    }
+
 
     public Scenario getScenarioCourant() {
         return scenarioCourant;

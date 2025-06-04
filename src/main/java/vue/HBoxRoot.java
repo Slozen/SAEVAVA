@@ -28,11 +28,8 @@ public class HBoxRoot extends HBox {
         controleur = new Controleur();
         rightSide.getLetsGoBoutton().setOnAction(controleur);
 
-
-        // Ajout des conteneurs à HBXRoot
         this.getChildren().addAll(leftSide, rightSide);
 
-        // Configuration des proportions de largeur
         leftSide.setPrefWidth(700); // Largeur du côté gauche
         rightSide.setPrefWidth(300);
 

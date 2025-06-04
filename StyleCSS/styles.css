@@ -120,3 +120,15 @@
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
 }
+
+.vendeur-acheteur{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+}
+
+.ventes{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+}
